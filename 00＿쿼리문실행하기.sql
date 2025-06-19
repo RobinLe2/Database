@@ -13,7 +13,7 @@
       2. 접속하기
         C:\>mysql -u 사용자 -p
       3. 접속 성공하면 MySQL Shell로 진입 
-        mysql>ㅇㄹㅇㄹ
+        mysql>
       4. 실행 명령
         mysql> source *.sql
     */
