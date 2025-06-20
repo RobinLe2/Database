@@ -38,3 +38,7 @@ DROP USER 'user_test'@'%' ;   # DROP USER user_test;
 
 # 5. db_test 데이터 삭제하기
 DROP DATABASE IF EXISTS db_test;
+
+# 수업에서 사용할 사용자 만들고 권한 부여하기
+CREATE USER IF NOT EXISTS 'goodee'@'%' IDENTIFIED BY 'goodee';
+GRANT ALL PRIVILEGES ON *.* TO 'goodee'@'%';
