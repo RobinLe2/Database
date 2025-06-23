@@ -68,21 +68,6 @@ SELECT d.dept_name AS "부서명",
   
   # 2-6) 위치가 "대구"인 부서 조회하기
   SELECT * 
-  from tbl_department
-  WHERE dept_location ="대구";  -- 비교 연산자 : =, !-, > , >=, < , <=
-  
-  # 2-7) 위치가 "대구"이고  부서 아이디가 3 이상인 부서 조회하기
-  SELECT *
-  FROM tbl_department 
-  WHERE (dept_location="대구") AND (dept_id >= 3);  -- 논리연산자 : AND, OR
-  
-  #2-8) 위치가 "서울" 또는 "대구" 인 부서 조회하기
-  SELECT *
-  FROM tbl_department
-  WHERE dept_location = "서울" OR dept_location="대구";
-  
-  #2-8) 위치가 "서울" 또는 "대구" 인 부서 조회하기
-  SELECT *
   FROM tbl_department
   WHERE dept_location IN ("서울", "대구");  -- OR 연산의 대체 연산 : IN연산
   
