@@ -56,6 +56,7 @@ FROM tbl_employee
 ORDER BY position ASC,
                   hire_date DESC;
 
+
 # 11. 가장 급여가 높은 직원 1명 조회하기
 SELECT *
 FROM tbl_employee

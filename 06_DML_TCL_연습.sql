@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS tbl_bank (
                 ("CHLOE" , "01023452345"),
                 ("TOM" ,"01034563456"),
                 ("JACK","01045674567");
+                
 
 #계좌 정보 입력
   INSERT INTO  tbl_account(account_balance,customer_id,bank_id) 
