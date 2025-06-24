@@ -282,8 +282,12 @@ GROUP BY U.user_id, U.user_name;
     이휘재  2
     박수홍  3
 */
-
-
+select * from tbl_buy;
+SELECT U.user_name AS 고객명, COUNT(B.user_no) AS 구매횟수
+FROM tbl_user U 
+JOIN tbl_buy B ON U.user_no = B.user_no
+GROUP BY U.user_name
+HAVING COUNT(B.user_no) >= 2;
 # 15. 어떤 고객이 어떤 상품을 구매했는지 조회하세요. 
 # 구매 이력이 없는 고객도 조회하고 아이디로 오름차순 정렬하세요.
 /*
@@ -304,19 +308,29 @@ GROUP BY U.user_id, U.user_name;
     신동엽   NULL
     유재석   NULL
 */
+SELECT U.user_name AS 고객명, P.prod_name AS 구매상품
+FROM tbl_user U
+LEFT OUTER JOIN tbl_buy B ON U.user_no = B.user_no
+LEFT OUTER JOIN tbl_product P ON P.prod_code = B.prod_code
+ORDER BY U.user_id ASC;
+#16. 상품 테이블에서 상품명이 "책"인 상품의 카테고리를 "서적"으로 수정하세요.
+UPDATE tbl_product
+SET category = '서적'
+WHERE prod_name = '책';
 
-
-# 16. 상품 테이블에서 상품명이 "책"인 상품의 카테고리를 "서적"으로 수정하세요.
-
-
+SET SQL_SAFE_UPDATES = 0;
 # 17. 연락처1이 "011"인 사용자의 연락처1을 모두 "010"으로 수정하세요.
+UPDATE tbl_user
+SET user_mobile1 = '010'
+WHERE user_mobile1 = '011';
 
+SELECT * FROM tbl_user;
 
 # 18. 구매번호가 가장 큰 구매내역을 삭제하세요.
 # MySQL은 UPDATE/DELETE 문에서 자기 자신의 테이블 데이터를 직접 사용할 수 없습니다. 
 # (Error Code: 1093.)
-# 아래와 같은 형식의 쿼리문은 오류가 발생합니다.
-DELETE
+# 아래와 같은 형식의 쿼리문은 오류가 발생합니다.  XXXX
+DELETE 
   FROM tbl_buy
  WHERE buy_no = (SELECT MAX(buy_no)
                    FROM tbl_buy);
@@ -327,9 +341,15 @@ DELETE
 # 19. 상품코드가 1인 상품을 삭제하세요. 
 # 삭제 이후 상품번호가 1인 상품의 구매내역을 조회하세요.
 # 1) 삭제
-
+DELETE FROM tbl_product
+WHERE prod_code =1 ;
 # 2) 삭제 후 구매내역 조회
-
+SELECT * FROM tbl_buy WHERE prod_code=1;
 
 # 20. 사용자번호가 5인 사용자를 삭제하세요. 
+DELETE FROM tbl_buy
+WHERE user_no = 5;
+
+DELETE FROM tbl_user
+WHERE user_no = 5;
 # 사용자번호가 5인 사용자의 구매 내역을 먼저 삭제한 뒤 진행해야 합니다.
