@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS db_bookstore;
 USE db_bookstore;
 
-
+DROP DATABASE db_bookstore;
 
 
 # 1. tbl_book 테이블을 생성하세요.
@@ -245,12 +245,12 @@ WHERE b.price = (SELECT  MAX(price)  FROM tbl_book);
     고객명  구매도서수
     김연아  2
 */
-SELECT c.cust_name AS 고객명, COUNT(o.order_id) AS 구매도서수
+SELECT c.cust_name AS 고객명, SUM(o.amount) AS 구매도서수
 FROM tbl_customer c
 JOIN tbl_order o ON c.cust_id=o.cust_id
 WHERE c.cust_name = "김연아"
 GROUP BY c.cust_name;
-
+select * from tbl_order;
 # 16. 출판사별로 판매된 책의 개수를 조회하세요.
 /*
     출판사     판매된책수
@@ -260,11 +260,11 @@ GROUP BY c.cust_name;
     이상미디어 5
     삼성당     0
 */
-SELECT b.publisher AS 출판사, SUM(o.amount) AS 판매된책수
-FROM tbl_book b
-LEFT OUTER JOIN tbl_order o
-ON b.book_id = o.book_id
-GROUP BY b.publisher;
+SELECT B.publisher AS 출판사 , SUM(O.amount) AS 판매된책수
+  FROM tbl_book B 
+  LEFT OUTER JOIN tbl_order O
+  ON B.book_id = O.book_id
+ GROUP BY B.publisher;
 
 # 17. '박지성'이 구매한 도서를 발간한 출판사(publisher) 개수를 조회하세요.
 /*
@@ -273,8 +273,8 @@ GROUP BY b.publisher;
 */
 SELECT c.cust_name AS 고객명, COUNT(DISTINCT b.publisher) AS 출판사수
 FROM tbl_order o
-LEFT OUTER JOIN tbl_book b ON  o.book_id = b.book_id
-LEFT OUTER JOIN tbl_customer c ON o.cust_id = c.cust_id
+JOIN tbl_book b ON  o.book_id = b.book_id
+JOIN tbl_customer c ON o.cust_id = c.cust_id
 WHERE c.cust_name="박지성"
 GROUP BY c.cust_name;
 
@@ -303,10 +303,10 @@ GROUP BY c.cust_name;
     추신수  86000      2
     박세리  0          0
 */
-SELECT c.cust_name AS 고객명 , SUM(b.price*o.amount) AS 총구매액, SUM(o.amount)
-FROM tbl_order o
-LEFT OUTER JOIN tbl_book b ON  o.book_id = b.book_id
-RIGHT OUTER JOIN tbl_customer c ON o.cust_id = c.cust_id
+SELECT c.cust_name AS 고객명 , SUM(b.price*o.amount) AS 총구매액, COUNT(o.order_id) AS 구매횟수
+FROM tbl_customer c
+LEFT OUTER JOIN tbl_order o ON c.cust_id = o.cust_id
+LEFT OUTER JOIN tbl_book b ON o.book_id = b.book_id
 GROUP BY c.cust_name;
 
 # 20. 총구매액이 2~3위인 고객의 이름와 총구매액을 조회하세요.

@@ -111,7 +111,7 @@ WHERE user_mobile2 LIKE "5%";
 */
 SELECT user_no, user_id, create_date
 FROM tbl_user
-WHERE create_date > '2010-01-01';
+WHERE create_date >= '2010-01-01';
 
 # 4. 사용자번호와 연락처1, 연락처2를 연결하여 조회하세요. 
 # 연락처가 없는 경우 NULL 대신 "None"으로 조회하세요.
@@ -184,10 +184,11 @@ WHERE B.user_no IS NULL;
     서적      2
     전자      4
 */
-SELECT P.category AS 카테고리, COUNT(B.buy_no) AS 구매횟수
+SELECT P.category AS 카테고리, COUNT(P.category) AS 구매횟수
 FROM tbl_product P
 JOIN tbl_buy B ON P.prod_code = B.prod_code
 GROUP BY P.category; 
+
 
 # 9. 아이디별 구매횟수를 조회하세요.
 /*
@@ -268,14 +269,14 @@ WHERE P.category = "전자";
     LHJ     이휘재  2         80
 */
 SELECT U.user_id AS 아이디, U.user_name AS 고객명, COUNT(*) AS 구매횟수, SUM(B.buy_amount*P.prod_price) AS 총구매액
-FROM tbl_product P 
-JOIN tbl_buy B ON P.prod_code = B.prod_code
+FROM tbl_buy B
+JOIN tbl_product P ON P.prod_code = B.prod_code
 JOIN tbl_user U ON B.user_no = U.user_no
 WHERE B.user_no IS NOT NULL
 GROUP BY U.user_id, U.user_name;
 
 
-# 14. 구매횟수가 2회 이상인 고객명과 구매횟수를 조회하세요.
+# 14. 구매횟수가 2회 이상인 고객명과 구매횟수를 조회하세요.+
 /*
     고객명  구매횟수
     강호동  3
@@ -313,6 +314,7 @@ FROM tbl_user U
 LEFT OUTER JOIN tbl_buy B ON U.user_no = B.user_no
 LEFT OUTER JOIN tbl_product P ON P.prod_code = B.prod_code
 ORDER BY U.user_id ASC;
+
 #16. 상품 테이블에서 상품명이 "책"인 상품의 카테고리를 "서적"으로 수정하세요.
 UPDATE tbl_product
 SET category = '서적'
@@ -337,6 +339,15 @@ DELETE
 
 # 최대 구매번호를 구할 때 서브쿼리를 하나 더 활용해서 해결해 보세요.
 
+
+  DELETE 
+  FROM tbl_buy
+  WHERE buy_no = (SELECT a.최대
+                               FROM (
+                               SELECT MAX(buy_no) AS 최대
+                               FROM tbl_buy) AS 
+                               a);
+                             
 
 # 19. 상품코드가 1인 상품을 삭제하세요. 
 # 삭제 이후 상품번호가 1인 상품의 구매내역을 조회하세요.
